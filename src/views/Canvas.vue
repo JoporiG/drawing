@@ -46,12 +46,12 @@ export default {
             ctx.fill();
         },
         drawLine(){
-                this.CanvasClear();
-                const {x, y, color} = this.P[0]
-                const ctx = this.canvas.getContext("2d");
-                ctx.fillStyle = color;
-                const width = 5;
-                const height = 5;
+                //this.CanvasClear();
+                //const {x, y, color} = this.P[0]
+                //const ctx = this.canvas.getContext("2d");
+                //ctx.fillStyle = color;
+                //const width = 5;
+                //const height = 5;
                 let dist = Math.sqrt(Math.pow(this.P[0].x - this.P[1].x, 2) + Math.pow(this.P[0].y - this.P[1].y, 2))
                 let Xcoff = Math.abs(this.P[0].x - this.P[1].x) / dist;
                 let Ycoff = Math.abs(this.P[0].y - this.P[1].y) / dist;
@@ -61,21 +61,27 @@ export default {
                 if(this.P[0].x > this.P[1].x){
                     Xcoff *= -1;
                 }
-                for(let i = 0; i < dist; i++){
+                for(let i = 0; i < dist; i += 4){
                     let PA = {
                         x: this.P[0].x + Xcoff * i,
                         y: this.P[0].y + Ycoff * i,
-                        color: "red"
                     }
-                    this.points.push(PA);
+                    /*this.$axios.get("http://188.225.47.187/api/canvas/setpoint.php", {
+                        params:{
+                            x: PA.x,s
+                            y: PA.y
+                        }
+                    })*/
+                    this.points.push({x: PA.x, y: PA.y, color: "yellow"})
+                    
                 }
-                ctx.fillRect(x - width / 2, y - height / 2, width, height);
-                ctx.fill();
+                //ctx.fillRect(x - width / 2, y - height / 2, width, height);
+                //ctx.fill();
 
         },
         CanvasClicked(event){
             if(this.Draw == "Point"){
-                this.points.push({x:event.pageX, y: event.pageY, color: "green"})
+                this.points.push({x: event.pageX, y: event.pageY, color: "green"})
                 this.$axios.get("http://188.225.47.187/api/canvas/setpoint.php", {
                     params:{
                         x: event.pageX,
@@ -83,15 +89,8 @@ export default {
                     }
                 })
             } else if(this.Draw == "Line"){
-                /*this.$axios.get("http://188.225.47.187/api/canvas/setpoint.php", {
-                    params:{
-                        x: event.pageX,
-                        y: event.pageY
-                    }
-                })*/
                 this.P.push({x: event.pageX, y: event.pageY});
                 if(this.P.length == 2){
-                    console.log("clicked")
                     this.drawLine();
                     this.P.length = 0;
                 }
@@ -111,13 +110,13 @@ export default {
     },
     mounted(){
         this.canvas = document.getElementById("myCan");
-        /*setInterval(()=>{
+        setInterval(()=>{
             this.loadPoints();
-        }, 4000)*/
+        }, 4000)
     },
     watch:{
         points(){
-            this.CanvasClear();
+            //this.CanvasClear();
             for(const point of this.points){
                 this.drawPoint(point);
             }
