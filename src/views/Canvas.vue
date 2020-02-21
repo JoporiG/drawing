@@ -55,15 +55,17 @@ export default {
                 let dist = Math.sqrt(Math.pow(this.P[0].x - this.P[1].x, 2) + Math.pow(this.P[0].y - this.P[1].y, 2))
                 let Xcoff = Math.abs(this.P[0].x - this.P[1].x) / dist;
                 let Ycoff = Math.abs(this.P[0].y - this.P[1].y) / dist;
-                if(this.P[0].x > this.P[1].x){
-                    let a = this.P[0].x;
-                    this.P[0].x = this.P[1].x;
-                    this.P[1].x = a;
-                }
                 if(this.P[0].y > this.P[1].y){
                     let a = this.P[0].y;
                     this.P[0].y = this.P[1].y;
                     this.P[1].y = a;
+                    Ycoff *= -1;
+                }
+                if(this.P[0].x > this.P[1].x){
+                    let a = this.P[0].x;
+                    this.P[0].x = this.P[1].x;
+                    this.P[1].x = a;
+                    Xcoff *= -1;
                 }
                 for(let i = 0; i < dist; i++){
                     let PA = {
